@@ -1,3 +1,3 @@
-# Welcome to Napa
+# Sam Granieri's Business Checkin Service
 
-TODO: Add an awesome README that explains how all this stuff works!
+Checking into your favorite businesses using the [Napa](http://github.com/bellycard/napa) framework
