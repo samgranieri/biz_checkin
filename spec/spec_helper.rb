@@ -17,6 +17,8 @@ require 'database_cleaner'
 Dir['./spec/support/**/*.rb'].each { |f| require f }
 
 RSpec.configure do |config|
+  config.tty = true
+  config.color = true
   config.include FactoryGirl::Syntax::Methods
 
   config.before(:suite) do

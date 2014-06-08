@@ -14,6 +14,7 @@ gem 'bcrypt'
 
 group :development,:test do
   gem 'pry'
+  gem 'awesome_print'
 end
 
 group :development do
@@ -23,6 +24,7 @@ end
 group :test do
   gem 'factory_girl'
   gem 'rspec'
+  gem 'rspec-collection_matchers'
   gem 'rack-test'
   gem 'simplecov'
   gem 'webmock'
