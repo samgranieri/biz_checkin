@@ -20,6 +20,7 @@ RSpec.configure do |config|
   config.tty = true
   config.color = true
   config.include FactoryGirl::Syntax::Methods
+  # config.filter_run_including focus: true
 
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction

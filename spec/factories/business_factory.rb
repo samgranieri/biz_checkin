@@ -7,5 +7,6 @@ FactoryGirl.define do
     zip "60614"
     website "http://www.711.com"
     phone "(773) 528-0190"
+    waiting_period 30
   end
 end

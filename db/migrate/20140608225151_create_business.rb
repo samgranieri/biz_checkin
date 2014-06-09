@@ -8,6 +8,7 @@ class CreateBusiness < ActiveRecord::Migration
       t.string :state
       t.string :website
       t.string :phone
+      t.integer :waiting_period
     end
   end
 end

@@ -11,6 +11,7 @@ gem 'napa'
 gem 'roar'
 gem 'grape-swagger'
 gem 'bcrypt'
+gem 'timecop'
 
 group :development,:test do
   gem 'pry'
