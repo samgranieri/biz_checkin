@@ -10,6 +10,14 @@ class BusinessesApi < Grape::API
 
   desc 'Create an business'
   params do
+    requires :name, type: String, desc: 'Business name'
+    requires :address, type: String, desc: 'Business address'
+    requires :city, type: String, desc: 'Business city'
+    requires :state, type: String, desc: 'Business state'
+    requires :zip, type: String, desc: 'Business zip'
+    requires :website, type: String, desc: 'Business website'
+    requires :phone, type: String, desc: 'Business phone'
+    requires :waiting_period, type: String, desc: 'Business waiting_period'
   end
 
   post do
