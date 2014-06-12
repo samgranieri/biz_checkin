@@ -11,6 +11,8 @@ class ApiKeysApi < Grape::API
       api_key = ApiKey.create(user: user)
       error!(present_error(:record_invalid, api_key.errors.full_messages)) unless api_key.errors.empty?
       represent api_key, with: ApiKeyRepresenter
+    else
+      error!(present_error(:invalid_login, ['email and/or password are wrong']), 403)
     end
   end
 end
