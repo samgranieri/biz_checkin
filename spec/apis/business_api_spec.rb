@@ -19,6 +19,15 @@ describe BusinessesApi do
       expect(last_response.body).to eq({data: BusinessRepresenter.new(business)}.to_json)
     end
   end
+  describe "PUT /business/id" do
+    it "should update a business if needed" do
+      business = FactoryGirl.create(:business)
+      put "/businesses/#{business.id}", name: 'Joes Crab Shack'
+      expect(last_response.status).to eq(200)
+      updated_biz = JSON.parse(last_response.body)['data']
+      expect(updated_biz['name']).to eq('Joes Crab Shack')
+    end
+  end
   describe "POST /businesses" do
     it "should create a business with all the attributes" do
       post "/businesses", FactoryGirl.build(:business).attributes

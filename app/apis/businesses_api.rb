@@ -38,6 +38,14 @@ class BusinessesApi < Grape::API
 
     desc 'Update an business'
     params do
+      optional :name, type: String, desc: 'Business name'
+      optional :address, type: String, desc: 'Business address'
+      optional :city, type: String, desc: 'Business city'
+      optional :state, type: String, desc: 'Business state'
+      optional :zip, type: String, desc: 'Business zip'
+      optional :website, type: String, desc: 'Business website'
+      optional :phone, type: String, desc: 'Business phone'
+      optional :waiting_period, type: String, desc: 'Business waiting_period'
     end
     put do
       # fetch business record and update attributes.  exceptions caught in app.rb
