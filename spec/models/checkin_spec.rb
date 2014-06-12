@@ -25,14 +25,14 @@ describe Checkin do
     let(:business) { FactoryGirl.create(:business) }
     let(:user) { FactoryGirl.create(:user) }
     it 'should not allow a user to check in at 15 minutes' do
-      checkin = FactoryGirl.create(:checkin, business: business, user: user)
+      FactoryGirl.create(:checkin, business: business, user: user)
       Timecop.freeze(15.minutes.from_now) do
         later_checkin = FactoryGirl.build(:checkin, business: business, user: user)
         expect(later_checkin).to be_invalid
       end
     end
     it 'show allow a user to check into a business after 30 minutes' do
-      checkin = FactoryGirl.create(:checkin, business: business, user: user)
+      FactoryGirl.create(:checkin, business: business, user: user)
       Timecop.freeze(Time.now + 35.minutes) do
         later_checkin = FactoryGirl.build(:checkin, business: business, user: user)
         expect(later_checkin).to be_valid
