@@ -10,6 +10,7 @@ gem 'shotgun'
 gem 'napa'
 gem 'roar'
 gem 'grape-swagger'
+gem 'napa_pagination'
 gem 'bcrypt'
 gem 'timecop'
 

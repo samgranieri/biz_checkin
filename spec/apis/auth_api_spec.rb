@@ -39,7 +39,7 @@ describe 'AuthApi' do
   end
   describe 'DELETE /logout' do
     context 'when logged in' do
-      let(:api_key){FactoryGirl.create(:api_key, user: user)}
+      let(:api_key) { FactoryGirl.create(:api_key, user: user) }
       before do
         delete '/auth/logout', api_key: api_key.access_token
       end

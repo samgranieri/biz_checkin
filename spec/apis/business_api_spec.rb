@@ -45,4 +45,29 @@ describe BusinessesApi do
       end
     end
   end
+  describe 'GET /businesses/:id/checkins' do
+    context 'when logged in' do
+      before do
+        user2 = FactoryGirl.create(:user)
+        user = FactoryGirl.create(:user)
+        business = FactoryGirl.create(:business)
+        api_key = FactoryGirl.create(:api_key, user: user)
+        Timecop.freeze(2.days.ago) do
+          @checkin1 =  FactoryGirl.create(:checkin, user: user, business: business)
+          @checkin2 =  FactoryGirl.create(:checkin, user: user2, business: business)
+        end
+        Timecop.freeze(1.day.ago) do
+          FactoryGirl.create(:checkin, user: user, business: business)
+        end
+        get "/businesses/#{business.id}/checkins", api_key: api_key.access_token
+      end
+      it 'should return a 200 status code' do
+        expect(last_response.status).to eq(200)
+      end
+      it 'should return the number of checkins per business for a particular user' do
+        response = JSON.parse(last_response.body)
+        expect(response['data']).to have(2).items
+      end
+    end
+  end
 end

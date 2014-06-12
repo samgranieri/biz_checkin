@@ -1,4 +1,5 @@
 class BusinessesApi < Grape::API
+  helpers Authentication
   desc 'Get a list of businesses'
   params do
     optional :ids, type: String, desc: 'comma separated business ids'
@@ -52,6 +53,18 @@ class BusinessesApi < Grape::API
       business = Business.find(params[:id])
       business.update_attributes!(declared(params, include_missing: false))
       represent business, with: BusinessRepresenter
+    end
+    namespace :checkins do
+      desc 'Get the number of checkins to business'
+      params do
+        requires :api_key, type: String, desc: "User's api key"
+      end
+      get do
+        authenticate!
+        business = Business.find_by!(id: params[:id])
+        checkins = business.checkins.where(user_id: current_user.id)
+        paginate checkins, with: CheckinRepresenter
+      end
     end
   end
 end
