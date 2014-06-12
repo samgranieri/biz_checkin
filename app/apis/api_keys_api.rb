@@ -15,4 +15,15 @@ class ApiKeysApi < Grape::API
       error!(present_error(:invalid_login, ['email and/or password are wrong']), 403)
     end
   end
+
+  desc 'Delete an Api Key'
+  params do
+    requires :access_token, type: String, desc: 'Api Key access token'
+  end
+  route_param :access_token do
+    delete do
+      api_key = ApiKey.find_by!(access_token: params[:access_token])
+      api_key.destroy
+    end
+  end
 end
