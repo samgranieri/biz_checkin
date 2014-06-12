@@ -5,7 +5,7 @@ class ApiKey < ActiveRecord::Base
   before_create :set_expires_at
 
   def expired?
-    DateTime.now >= self.expires_at
+    DateTime.now >= expires_at
   end
 
   private

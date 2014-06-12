@@ -7,7 +7,7 @@ class Checkin < ActiveRecord::Base
   validates :user, presence: true
   validate :user_needs_to_wait, on: :create
 
-  scope :since, -> (current_time){where("created_at > ?", current_time)}
+  scope :since, -> (current_time) {where('created_at > ?', current_time) }
 
   private
   def user_needs_to_wait
@@ -18,4 +18,3 @@ class Checkin < ActiveRecord::Base
     end
   end
 end
-
