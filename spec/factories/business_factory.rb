@@ -1,4 +1,4 @@
-FactoryGirl.define do 
+FactoryGirl.define do
   factory :business do
     name "7/11"
     address "2264 N Clark St"

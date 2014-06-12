@@ -8,7 +8,7 @@ describe Business do
     end
     %i[ name address city zip state website phone waiting_period].each do |sym|
       it "should require a #{sym}" do
-        business.send("#{sym}=", nil) 
+        business.send("#{sym}=", nil)
         expect(business).to be_invalid
         expect(business).to have(1).error_on(sym)
       end
