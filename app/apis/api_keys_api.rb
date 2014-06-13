@@ -24,6 +24,7 @@ class ApiKeysApi < Grape::API
     delete do
       api_key = ApiKey.find_by!(access_token: params[:access_token])
       api_key.destroy
+      {status: 'Api Key deleted'}
     end
   end
 end

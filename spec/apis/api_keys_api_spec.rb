@@ -8,17 +8,25 @@ describe 'ApiKeysApi' do
   let(:user) { FactoryGirl.create(:user) }
   describe 'DELETE /api_keys/:value' do
     context 'when an api_key exists' do
-      it 'should be deleted successfully' do
-        api_key = FactoryGirl.create(:api_key, user: user)
-        expect{
-          delete "/api_keys/#{api_key.access_token}"
-        }.to change { ApiKey.count }.by(-1)
+      let(:api_key){FactoryGirl.create(:api_key, user: user)}
+      before do
+        delete "/api_keys/#{api_key.access_token}"
       end
-      context 'when an ApiKey does not exist' do
-        it 'should return a 404' do
-          delete '/api_keys/blahblah'
-          expect(last_response.status).to eq(404)
-        end
+      it 'should be deleted successfully' do
+        expect(user.api_key).to be_nil
+      end
+      it 'should return a 200' do
+        expect(last_response.status).to eq(200)
+      end
+      it "should return an informational response" do
+        response= JSON.parse(last_response.body)
+        expect(response['status']).to eq('Api Key deleted')
+      end
+    end
+    context 'when an ApiKey does not exist' do
+      it 'should return a 404' do
+        delete '/api_keys/blahblah'
+        expect(last_response.status).to eq(404)
       end
     end
 
