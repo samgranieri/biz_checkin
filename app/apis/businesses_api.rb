@@ -36,7 +36,6 @@ class BusinessesApi < Grape::API
       business = Business.find(params[:id])
       represent business, with: BusinessRepresenter
     end
-
     desc 'Update an business'
     params do
       optional :name, type: String, desc: 'Business name'
@@ -64,6 +63,24 @@ class BusinessesApi < Grape::API
         business = Business.find_by!(id: params[:id])
         checkins = business.checkins.where(user_id: current_user.id)
         paginate checkins, with: CheckinRepresenter
+      end
+
+      desc 'Check into a business'
+      params do
+        requires :api_key, type: String, desc: "User's api key"
+      end
+      post do
+        authenticate!
+        business = Business.find_by!(id: params['id'])
+        checkin = Checkin.create(business: business, user: current_user)
+        unless checkin.valid?
+          if checkin.errors.full_messages_for(:base).include?("user checked in too soon")
+            error!(present_error(:record_invalid, checkin.errors.full_messages), 422)
+          else
+            error!(present_error(:record_invalid, checkin.errors.full_messages))
+          end
+        end
+        represent checkin, with: CheckinRepresenter
       end
     end
   end

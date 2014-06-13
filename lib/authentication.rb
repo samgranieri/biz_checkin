@@ -1,6 +1,6 @@
 module Authentication
   def authenticate!
-    error!('Unauthorized. Invalid or expired token.', 401) unless current_user
+    error!('Unauthorized. Invalid or expired api key.', 401) unless current_user
   end
 
   def current_user
