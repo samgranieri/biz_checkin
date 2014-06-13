@@ -73,8 +73,15 @@ class BusinessesApi < Grape::API
         authenticate!
         business = Business.find_by!(id: params['id'])
         checkin = Checkin.create(business: business, user: current_user)
-        unless checkin.valid?
+        if checkin.valid?
+          $STATS.increment('successful_checkin')
+          $STATS.increment("successful_checkin_for_business:#{business.id}")
+          $STATS.increment("successful_checkin_for_zip:#{business.zip}")
+        else
           if checkin.errors.full_messages_for(:base).include?("user checked in too soon")
+            $STATS.increment('premature_checkin')
+            $STATS.increment("premature_checkin_for_business:#{business.id}")
+            $STATS.increment("premature_checkin_for_zip:#{business.zip}")
             error!(present_error(:record_invalid, checkin.errors.full_messages), 422)
           else
             error!(present_error(:record_invalid, checkin.errors.full_messages))

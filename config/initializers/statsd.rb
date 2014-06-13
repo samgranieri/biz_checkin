@@ -1,0 +1,1 @@
+$STATS = Napa::Stats.emitter

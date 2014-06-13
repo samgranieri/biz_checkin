@@ -123,9 +123,13 @@ describe BusinessesApi do
     context "with providing a proper api key and the proper business id" do
       context "for one checkin" do
         before do
-          post "/businesses/#{business.id}/checkins", api_key: api_key.access_token
+          # post "/businesses/#{business.id}/checkins", api_key: api_key.access_token
         end
-        it "should create a checkin for that business" do
+        it "should create a checkin for that business and emit some stats" do
+          expect($STATS).to receive(:increment).with('successful_checkin').twice
+          expect($STATS).to receive(:increment).with("successful_checkin_for_business:#{business.id}").once
+          expect($STATS).to receive(:increment).with("successful_checkin_for_zip:#{business.zip}").once
+          post "/businesses/#{business.id}/checkins", api_key: api_key.access_token
           expect(last_response.status).to eq(201)
         end
       end
@@ -135,6 +139,7 @@ describe BusinessesApi do
         Timecop.travel(10.minutes.ago) do
           post "/businesses/#{business.id}/checkins", api_key: api_key.access_token
         end
+
         post "/businesses/#{business.id}/checkins", api_key: api_key.access_token
       end
       it "should respond with a 422 error code" do
@@ -145,6 +150,12 @@ describe BusinessesApi do
         response = JSON.parse(last_response.body)
         expect(response['error']['code']).to eq('record_invalid')
         expect(response['error']['message']).to include('user checked in too soon')
+      end
+      it "should increment the premature checkin statistic once" do
+        expect($STATS).to receive(:increment).with('premature_checkin').once
+        expect($STATS).to receive(:increment).with("premature_checkin_for_business:#{business.id}").once
+        expect($STATS).to receive(:increment).with("premature_checkin_for_zip:#{business.zip}").once
+        post "/businesses/#{business.id}/checkins", api_key: api_key.access_token
       end
     end
   end
