@@ -22,6 +22,7 @@ class BusinessesApi < Grape::API
   end
 
   post do
+    authenticate!
     business = Business.create(declared(params, include_missing: false))
     error!(present_error(:record_invalid, business.errors.full_messages)) unless business.errors.empty?
     represent business, with: BusinessRepresenter
@@ -48,6 +49,7 @@ class BusinessesApi < Grape::API
       optional :waiting_period, type: String, desc: 'Business waiting_period'
     end
     put do
+      authenticate!
       # fetch business record and update attributes.  exceptions caught in app.rb
       business = Business.find(params[:id])
       business.update_attributes!(declared(params, include_missing: false))

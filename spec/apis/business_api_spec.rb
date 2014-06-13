@@ -21,16 +21,18 @@ describe BusinessesApi do
   end
   describe 'PUT /businesses/:id' do
     it 'should update a business if needed' do
+      api_key = FactoryGirl.create(:api_key)
       business = FactoryGirl.create(:business)
-      put "/businesses/#{business.id}", name: 'Joes Crab Shack'
+      put "/businesses/#{business.id}", name: 'Joes Crab Shack', api_key: api_key.access_token
       expect(last_response.status).to eq(200)
       updated_biz = JSON.parse(last_response.body)['data']
       expect(updated_biz['name']).to eq('Joes Crab Shack')
     end
   end
   describe 'POST /businesses' do
+    let(:api_key){FactoryGirl.create(:api_key)}
     it 'should create a business with all the attributes' do
-      post '/businesses', FactoryGirl.build(:business).attributes
+      post '/businesses', FactoryGirl.build(:business).attributes.merge(api_key: api_key.access_token)
       expect(last_response.status).to eq(201)
     end
     it 'should complain if any of the attributes are missing' do
