@@ -122,11 +122,8 @@ describe BusinessesApi do
     end
     context "with providing a proper api key and the proper business id" do
       context "for one checkin" do
-        before do
-          # post "/businesses/#{business.id}/checkins", api_key: api_key.access_token
-        end
         it "should create a checkin for that business and emit some stats" do
-          expect($STATS).to receive(:increment).with('successful_checkin').twice
+          expect($STATS).to receive(:increment).with('successful_checkin').once
           expect($STATS).to receive(:increment).with("successful_checkin_for_business:#{business.id}").once
           expect($STATS).to receive(:increment).with("successful_checkin_for_zip:#{business.zip}").once
           post "/businesses/#{business.id}/checkins", api_key: api_key.access_token
